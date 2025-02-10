@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class DonateScreen extends StatefulWidget {
@@ -25,11 +26,37 @@ class _DonateScreenState extends State<DonateScreen> {
   List<String> dietaryInfos = ['Veg', 'Non-Veg', 'Contains Egg'];
   List<String> allergyInfos = ['None', 'Milk', 'Nuts', 'Wheat/maida'];
 
+  final CollectionReference _donations =
+      FirebaseFirestore.instance.collection('donations');
+
+  Future<void> _submitForm() async {
+    if (_formKey.currentState!.validate()) {
+      try {
+        await _donations.add({
+          'quantity': _quantityController.text,
+          'pickUpTill': _pickUpController.text,
+          'storageCondition': _storageCondition,
+          'freshnessLevel': _freshnessLevel,
+          'dietaryInfo': _dietaryInfo,
+          'allergyInfo': _allergyInfo,
+          'timestamp': FieldValue.serverTimestamp(),
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Donation submitted successfully!')),
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to submit donation: $e')),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Donate Food'),
+        title: const Text('Donate Food'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -39,7 +66,8 @@ class _DonateScreenState extends State<DonateScreen> {
             children: <Widget>[
               TextFormField(
                 controller: _quantityController,
-                decoration: InputDecoration(labelText: 'Quantity (in kgs)'),
+                decoration:
+                    const InputDecoration(labelText: 'Quantity (in kgs)'),
                 keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -50,7 +78,7 @@ class _DonateScreenState extends State<DonateScreen> {
               ),
               TextFormField(
                 controller: _pickUpController,
-                decoration: InputDecoration(labelText: 'Pick-up Till'),
+                decoration: const InputDecoration(labelText: 'Pick-up Till'),
                 keyboardType: TextInputType.datetime,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -61,7 +89,8 @@ class _DonateScreenState extends State<DonateScreen> {
               ),
               DropdownButtonFormField<String>(
                 value: _storageCondition,
-                decoration: InputDecoration(labelText: 'Storage Condition'),
+                decoration:
+                    const InputDecoration(labelText: 'Storage Condition'),
                 items: storageConditions.map((condition) {
                   return DropdownMenuItem<String>(
                     value: condition,
@@ -76,7 +105,7 @@ class _DonateScreenState extends State<DonateScreen> {
               ),
               DropdownButtonFormField<String>(
                 value: _freshnessLevel,
-                decoration: InputDecoration(labelText: 'Freshness Level'),
+                decoration: const InputDecoration(labelText: 'Freshness Level'),
                 items: freshnessLevels.map((level) {
                   return DropdownMenuItem<String>(
                     value: level,
@@ -91,7 +120,7 @@ class _DonateScreenState extends State<DonateScreen> {
               ),
               DropdownButtonFormField<String>(
                 value: _dietaryInfo,
-                decoration: InputDecoration(labelText: 'Dietary Info'),
+                decoration: const InputDecoration(labelText: 'Dietary Info'),
                 items: dietaryInfos.map((info) {
                   return DropdownMenuItem<String>(
                     value: info,
@@ -106,7 +135,7 @@ class _DonateScreenState extends State<DonateScreen> {
               ),
               DropdownButtonFormField<String>(
                 value: _allergyInfo,
-                decoration: InputDecoration(labelText: 'Allergy Info'),
+                decoration: const InputDecoration(labelText: 'Allergy Info'),
                 items: allergyInfos.map((level) {
                   return DropdownMenuItem<String>(
                     value: level,
@@ -119,17 +148,10 @@ class _DonateScreenState extends State<DonateScreen> {
                   });
                 },
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    // Process data
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Processing Data')),
-                    );
-                  }
-                },
-                child: Text('Submit'),
+                onPressed: _submitForm,
+                child: const Text('Submit'),
               ),
             ],
           ),
