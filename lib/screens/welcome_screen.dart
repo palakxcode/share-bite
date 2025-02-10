@@ -33,7 +33,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
       _navigationItem(
           Icons.add_box, Icons.question_answer, 'Donate', const DonateScreen()),
       _navigationItem(
-          Icons.bookmark_outline, Icons.food_bank, 'Seek', const SeekScreen()),
+          Icons.bookmark_outline, Icons.food_bank, 'Seek', SeekScreen()),
       _navigationItem(
           Icons.person_outline, Icons.person, 'Profile', ProfileScreen()),
     ];

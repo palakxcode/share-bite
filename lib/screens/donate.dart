@@ -36,7 +36,7 @@ class _DonateScreenState extends State<DonateScreen> {
         await _donations.add({
           'quantity': _quantityController.text,
           'pickUpTill': _pickUpController.text,
-          'address': _addressController,
+          'address': _addressController.text,
           'storageCondition': _storageCondition,
           'freshnessLevel': _freshnessLevel,
           'dietaryInfo': _dietaryInfo,
