@@ -11,6 +11,7 @@ class DonateScreen extends StatefulWidget {
 class _DonateScreenState extends State<DonateScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _quantityController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
   final TextEditingController _pickUpController = TextEditingController();
   String _storageCondition = 'Room Temperature';
   String _freshnessLevel = 'Fresh';
@@ -35,6 +36,7 @@ class _DonateScreenState extends State<DonateScreen> {
         await _donations.add({
           'quantity': _quantityController.text,
           'pickUpTill': _pickUpController.text,
+          'address': _addressController,
           'storageCondition': _storageCondition,
           'freshnessLevel': _freshnessLevel,
           'dietaryInfo': _dietaryInfo,
@@ -83,6 +85,17 @@ class _DonateScreenState extends State<DonateScreen> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter pick-up time';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _addressController,
+                decoration: const InputDecoration(labelText: 'Address'),
+                keyboardType: TextInputType.text,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter pick-up address';
                   }
                   return null;
                 },

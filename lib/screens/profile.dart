@@ -20,7 +20,7 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Profile"),
+        title: const Text("Profile"),
         centerTitle: true,
         backgroundColor: Colors.blueAccent,
       ),
@@ -34,27 +34,29 @@ class ProfileScreen extends StatelessWidget {
                 radius: 50,
                 backgroundImage: user?.photoURL != null
                     ? NetworkImage(user!.photoURL!)
-                    : AssetImage("assets/default_avatar.png") as ImageProvider,
+                    : const AssetImage("assets/default_avatar.png")
+                        as ImageProvider,
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               Text(
                 user?.displayName ?? "Guest User",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 5),
+              const SizedBox(height: 5),
               Text(
                 user?.email ?? "No Email",
-                style: TextStyle(fontSize: 16, color: Colors.grey),
+                style: const TextStyle(fontSize: 16, color: Colors.grey),
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton.icon(
                   onPressed: () => signOutUser(context),
-                  icon: Icon(Icons.logout),
-                  label: Text("Sign Out"),
+                  icon: const Icon(Icons.logout),
+                  label: const Text("Sign Out"),
                   style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(vertical: 12),
+                    padding: const EdgeInsets.symmetric(vertical: 12),
                     backgroundColor: Colors.redAccent,
                   ),
                 ),
