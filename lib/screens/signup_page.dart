@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firstapp/wrapper.dart';
+import 'package:firstapp/auth/wrapper.dart';
 // import 'package:firebase_core/firebase_core.dart';
 // import 'package:firstapp/homescreen.dart';
 import 'package:flutter/material.dart';

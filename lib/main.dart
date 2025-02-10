@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firstapp/firebase_options.dart';
-import 'package:firstapp/wrapper.dart';
+import 'package:firstapp/auth/wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
