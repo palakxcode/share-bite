@@ -22,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
           const Color.fromARGB(255, 0, 0, 0), // Sky blue background
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 36.0, vertical: 90),
+          padding: const EdgeInsets.symmetric(horizontal: 36.0, vertical: 120),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -36,11 +36,19 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               const Text(
-                'Let\'s kick out HUNGER.',
+                'Let\'s kick out',
                 style: TextStyle(
                   fontSize: 48.0,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
+                ),
+              ),
+              const Text(
+                'HUNGER.',
+                style: TextStyle(
+                  fontSize: 48.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.yellowAccent,
                 ),
               ),
               const SizedBox(height: 20),

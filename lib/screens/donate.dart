@@ -79,7 +79,7 @@ class _DonateScreenState extends State<DonateScreen> {
               ),
               const SizedBox(height: 20),
               buildTextField(
-                  'Enter reg. name', _nameController, TextInputType.number),
+                  'Enter reg. name', _nameController, TextInputType.text),
               buildTextField('Quantity (in kgs)', _quantityController,
                   TextInputType.number),
               buildTextField(

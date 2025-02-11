@@ -43,7 +43,7 @@ class ProfilePage extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             const Text(
-              "Let's take initiative to make people's lives better",
+              "Let's take initiative to make people's lives better\nBe back soon.",
               textAlign: TextAlign.center,
               style: TextStyle(color: Colors.grey, fontSize: 16),
             ),
