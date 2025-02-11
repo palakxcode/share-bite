@@ -55,6 +55,7 @@ class SeekScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      _buildInfoRow("🏢 Name", "${data['name'] ?? 'N/A'}"),
                       _buildInfoRow(
                           "🍽️ Quantity", "${data['quantity'] ?? 'N/A'} kg"),
                       _buildInfoRow(

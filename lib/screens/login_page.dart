@@ -30,8 +30,9 @@ class LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0),
+        padding: const EdgeInsets.symmetric(horizontal: 30.0),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -39,32 +40,61 @@ class LoginPageState extends State<LoginPage> {
             children: [
               const Text(
                 'Login',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 35,
+                    fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               const Text(
-                  'Hey, Enter your details to get sign in to your account',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 14, color: Colors.grey)),
+                'Hey, Enter your details to sign in to your account',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 14, color: Colors.grey),
+              ),
               const SizedBox(height: 20),
+
+              // Email Field
               TextField(
                 controller: email,
-                decoration: const InputDecoration(
-                  labelText: 'Enter Email / Phone No',
-                  border: OutlineInputBorder(),
+                style: const TextStyle(color: Colors.white), // White text input
+                decoration: InputDecoration(
+                  labelText: 'Enter Email',
+                  labelStyle: const TextStyle(color: Colors.grey), // Grey label
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8)),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(color: Colors.grey),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(color: Colors.white),
+                  ),
                 ),
               ),
               const SizedBox(height: 16),
+
+              // Password Field
               TextField(
                 controller: password,
-                decoration: const InputDecoration(
-                  labelText: 'Passcode',
-                  border: OutlineInputBorder(),
-                  suffixIcon: Icon(Icons.visibility_off),
-                ),
                 obscureText: true,
+                style: const TextStyle(color: Colors.white), // White text input
+                decoration: InputDecoration(
+                  labelText: 'Passcode',
+                  labelStyle: const TextStyle(color: Colors.grey), // Grey label
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8)),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(color: Colors.grey),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(color: Colors.white),
+                  ),
+                  suffixIcon:
+                      const Icon(Icons.visibility_off, color: Colors.grey),
+                ),
               ),
               const SizedBox(height: 12),
+
+              // Forgot Password
               Align(
                 alignment: Alignment.centerRight,
                 child: TextButton(
@@ -74,30 +104,35 @@ class LoginPageState extends State<LoginPage> {
                         MaterialPageRoute(
                             builder: (context) => const Forgot()));
                   },
-                  child: const Text('Forgot Password?',
-                      style: TextStyle(color: Colors.grey)),
+                  child: const Text(
+                    'Forgot Password?',
+                    style: TextStyle(color: Colors.grey),
+                  ),
                 ),
               ),
               const SizedBox(height: 16),
+
+              // Sign-in Button
               SizedBox(
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
                   onPressed: login,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orangeAccent,
+                    backgroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
                   child: const Text(
                     'Sign in',
-                    style: TextStyle(color: Colors.white, fontSize: 16),
+                    style: TextStyle(color: Colors.black, fontSize: 16),
                   ),
                 ),
               ),
               const SizedBox(height: 16),
-              const SizedBox(height: 20),
+
+              // Signup Navigation
               TextButton(
                 onPressed: () {
                   Navigator.push(
@@ -105,8 +140,10 @@ class LoginPageState extends State<LoginPage> {
                       MaterialPageRoute(
                           builder: (context) => const SignupPage()));
                 },
-                child: const Text("Don't have an account?",
-                    style: TextStyle(color: Colors.orangeAccent)),
+                child: const Text(
+                  "Don't have an account?",
+                  style: TextStyle(color: Colors.grey),
+                ),
               ),
             ],
           ),

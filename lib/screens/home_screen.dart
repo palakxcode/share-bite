@@ -35,6 +35,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   color: Colors.white,
                 ),
               ),
+              const Text(
+                'Let\'s kick out HUNGER.',
+                style: TextStyle(
+                  fontSize: 48.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
               const SizedBox(height: 20),
 
               // First Card: Total Donated Quantity
@@ -64,6 +72,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 valueBuilder: (snapshot) =>
                     snapshot.data!.docs.length.toString(),
               ),
+              // const Text(
+              //   'More to go💪🏻',
+              //   style: TextStyle(
+              //     fontSize: 48.0,
+              //     fontWeight: FontWeight.bold,
+              //     color: Colors.white,
+              //   ),
+              // )
             ],
           ),
         ),

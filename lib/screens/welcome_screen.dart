@@ -32,20 +32,18 @@ class _WelcomeScreenState extends State<WelcomeScreen>
       _navigationItem(
           Icons.home_outlined, Icons.home, 'Home', const HomeScreen()),
       _navigationItem(
-          Icons.add_box, Icons.question_answer, 'Donate', const DonateScreen()),
+          Icons.add_box, Icons.add_box, 'Donate', const DonateScreen()),
+      // _navigationItem(Icons.map, Icons.map, 'Map', const LocationScreen()),
+      _navigationItem(Icons.food_bank, Icons.food_bank, 'Seek', SeekScreen()),
       _navigationItem(
-          Icons.map, Icons.question_answer, 'Map', const LocationScreen()),
-      _navigationItem(
-          Icons.bookmark_outline, Icons.food_bank, 'Seek', SeekScreen()),
-      _navigationItem(
-          Icons.person_outline, Icons.person, 'Profile', ProfileScreen()),
+          Icons.person_outline, Icons.person, 'Profile', ProfilePage()),
     ];
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: biteColorSecondary,
+      backgroundColor: biteColorPrimary,
       bottomNavigationBar: _bottomNavigationBar(),
       body: Container(
         color: Colors.red.withOpacity(0.2), // Debug color

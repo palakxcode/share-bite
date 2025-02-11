@@ -1,68 +1,70 @@
-import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:firstapp/screens/login_page.dart';
 
-class ProfileScreen extends StatelessWidget {
-  final User? user = FirebaseAuth.instance.currentUser; // Get logged-in user
+class ProfilePage extends StatelessWidget {
+  const ProfilePage({super.key});
 
-  void signOutUser(BuildContext context) async {
+  void _signOut(BuildContext context) async {
     try {
       await FirebaseAuth.instance.signOut();
-      // Navigate to login or home screen after sign-out
-      Navigator.pushReplacementNamed(context, '/login');
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginPage()),
+        (route) => false,
+      );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Sign out failed: ${e.toString()}")),
+        SnackBar(content: Text("Error signing out: ${e.toString()}")),
       );
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser;
+
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
-        title: const Text("Profile"),
-        centerTitle: true,
-        backgroundColor: Colors.blueAccent,
+        title: const Text(
+          'Profile',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.black,
       ),
       body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CircleAvatar(
-                radius: 50,
-                backgroundImage: user?.photoURL != null
-                    ? NetworkImage(user!.photoURL!)
-                    : const AssetImage("assets/default_avatar.png")
-                        as ImageProvider,
-              ),
-              const SizedBox(height: 15),
-              Text(
-                user?.displayName ?? "Guest User",
-                style:
-                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 5),
-              Text(
-                user?.email ?? "No Email",
-                style: const TextStyle(fontSize: 16, color: Colors.grey),
-              ),
-              const SizedBox(height: 30),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton.icon(
-                  onPressed: () => signOutUser(context),
-                  icon: const Icon(Icons.logout),
-                  label: const Text("Sign Out"),
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    backgroundColor: Colors.redAccent,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              user?.email ?? "Guest User",
+              style: const TextStyle(color: Colors.white, fontSize: 20),
+            ),
+            const SizedBox(height: 16),
+            const Text(
+              "Let's take initiative to make people's lives better",
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.grey, fontSize: 16),
+            ),
+            const SizedBox(height: 30),
+            SizedBox(
+              width: 200,
+              child: ElevatedButton(
+                onPressed: () => _signOut(context),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
                   ),
                 ),
+                child: const Text(
+                  'Sign Out',
+                  style: TextStyle(color: Colors.black),
+                ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

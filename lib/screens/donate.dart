@@ -12,6 +12,7 @@ class DonateScreen extends StatefulWidget {
 class _DonateScreenState extends State<DonateScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _quantityController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _pickUpController = TextEditingController();
   String _storageCondition = 'Room Temperature';
@@ -34,11 +35,10 @@ class _DonateScreenState extends State<DonateScreen> {
   Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
       try {
-        // Get the current user ID
         String userId = FirebaseAuth.instance.currentUser!.uid;
-
         await _donations.add({
           'userId': userId,
+          'name': _nameController.text,
           'quantity': _quantityController.text,
           'pickUpTill': _pickUpController.text,
           'address': _addressController.text,
@@ -62,6 +62,7 @@ class _DonateScreenState extends State<DonateScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -70,58 +71,20 @@ class _DonateScreenState extends State<DonateScreen> {
             children: <Widget>[
               const Text(
                 'Donation Details',
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 20),
-              TextFormField(
-                controller: _quantityController,
-                decoration: InputDecoration(
-                  labelText: 'Quantity (in kgs)',
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                ),
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter quantity';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 12),
-              TextFormField(
-                controller: _pickUpController,
-                decoration: InputDecoration(
-                  labelText: 'Pick-up Till',
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                ),
-                keyboardType: TextInputType.datetime,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter pick-up time';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 12),
-              TextFormField(
-                controller: _addressController,
-                decoration: InputDecoration(
-                  labelText: 'Address',
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                ),
-                keyboardType: TextInputType.text,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter pick-up address';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 12),
+              buildTextField(
+                  'Enter reg. name', _nameController, TextInputType.number),
+              buildTextField('Quantity (in kgs)', _quantityController,
+                  TextInputType.number),
+              buildTextField(
+                  'Pick-up Till', _pickUpController, TextInputType.datetime),
+              buildTextField('Address', _addressController, TextInputType.text),
               buildDropdown(
                   'Storage Condition', storageConditions, _storageCondition,
                   (value) {
@@ -142,18 +105,50 @@ class _DonateScreenState extends State<DonateScreen> {
               const SizedBox(height: 20),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.black,
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10)),
                 ),
                 onPressed: _submitForm,
                 child: const Text('Submit Donation',
-                    style: TextStyle(fontSize: 16, color: Colors.white)),
+                    style: TextStyle(fontSize: 16)),
               ),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget buildTextField(
+      String label, TextEditingController controller, TextInputType inputType) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: TextFormField(
+        controller: controller,
+        decoration: InputDecoration(
+          labelText: label,
+          labelStyle: const TextStyle(color: Colors.white),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: const BorderSide(color: Colors.white),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: const BorderSide(color: Colors.white),
+          ),
+        ),
+        keyboardType: inputType,
+        style: const TextStyle(color: Colors.white),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter $label';
+          }
+          return null;
+        },
       ),
     );
   }
@@ -166,12 +161,23 @@ class _DonateScreenState extends State<DonateScreen> {
         value: selectedItem,
         decoration: InputDecoration(
           labelText: label,
+          labelStyle: const TextStyle(color: Colors.white),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: const BorderSide(color: Colors.white),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: const BorderSide(color: Colors.white),
+          ),
         ),
+        dropdownColor: Colors.black,
+        style: const TextStyle(color: Colors.white),
         items: items.map((item) {
           return DropdownMenuItem<String>(
             value: item,
-            child: Text(item),
+            child: Text(item, style: const TextStyle(color: Colors.white)),
           );
         }).toList(),
         onChanged: onChanged,
