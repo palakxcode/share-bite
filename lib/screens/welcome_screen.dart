@@ -1,6 +1,7 @@
 import 'package:firstapp/constants/colors.dart';
 import 'package:firstapp/screens/donate.dart';
 import 'package:firstapp/screens/home_screen.dart';
+import 'package:firstapp/screens/location.dart';
 import 'package:firstapp/screens/profile.dart';
 import 'package:firstapp/screens/seek.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,7 @@ class NavigationItem {
 }
 
 class WelcomeScreen extends StatefulWidget {
-  WelcomeScreen({super.key});
+  const WelcomeScreen({super.key});
 
   @override
   State<WelcomeScreen> createState() => _WelcomeScreenState();
@@ -33,6 +34,8 @@ class _WelcomeScreenState extends State<WelcomeScreen>
       _navigationItem(
           Icons.add_box, Icons.question_answer, 'Donate', const DonateScreen()),
       _navigationItem(
+          Icons.map, Icons.question_answer, 'Map', const LocationScreen()),
+      _navigationItem(
           Icons.bookmark_outline, Icons.food_bank, 'Seek', SeekScreen()),
       _navigationItem(
           Icons.person_outline, Icons.person, 'Profile', ProfileScreen()),
@@ -42,12 +45,12 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-      ),
       backgroundColor: biteColorSecondary,
       bottomNavigationBar: _bottomNavigationBar(),
-      body: items[_currentIndex].screen,
+      body: Container(
+        color: Colors.red.withOpacity(0.2), // Debug color
+        child: items[_currentIndex].screen,
+      ),
     );
   }
 

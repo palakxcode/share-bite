@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class DonateScreen extends StatefulWidget {
@@ -33,7 +34,11 @@ class _DonateScreenState extends State<DonateScreen> {
   Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
       try {
+        // Get the current user ID
+        String userId = FirebaseAuth.instance.currentUser!.uid;
+
         await _donations.add({
+          'userId': userId,
           'quantity': _quantityController.text,
           'pickUpTill': _pickUpController.text,
           'address': _addressController.text,
@@ -57,19 +62,25 @@ class _DonateScreenState extends State<DonateScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Donate Food'),
-      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: ListView(
             children: <Widget>[
+              const Text(
+                'Donation Details',
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 20),
               TextFormField(
                 controller: _quantityController,
-                decoration:
-                    const InputDecoration(labelText: 'Quantity (in kgs)'),
+                decoration: InputDecoration(
+                  labelText: 'Quantity (in kgs)',
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                ),
                 keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -78,9 +89,14 @@ class _DonateScreenState extends State<DonateScreen> {
                   return null;
                 },
               ),
+              const SizedBox(height: 12),
               TextFormField(
                 controller: _pickUpController,
-                decoration: const InputDecoration(labelText: 'Pick-up Till'),
+                decoration: InputDecoration(
+                  labelText: 'Pick-up Till',
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                ),
                 keyboardType: TextInputType.datetime,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -89,9 +105,14 @@ class _DonateScreenState extends State<DonateScreen> {
                   return null;
                 },
               ),
+              const SizedBox(height: 12),
               TextFormField(
                 controller: _addressController,
-                decoration: const InputDecoration(labelText: 'Address'),
+                decoration: InputDecoration(
+                  labelText: 'Address',
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                ),
                 keyboardType: TextInputType.text,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -100,75 +121,60 @@ class _DonateScreenState extends State<DonateScreen> {
                   return null;
                 },
               ),
-              DropdownButtonFormField<String>(
-                value: _storageCondition,
-                decoration:
-                    const InputDecoration(labelText: 'Storage Condition'),
-                items: storageConditions.map((condition) {
-                  return DropdownMenuItem<String>(
-                    value: condition,
-                    child: Text(condition),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    _storageCondition = value!;
-                  });
-                },
-              ),
-              DropdownButtonFormField<String>(
-                value: _freshnessLevel,
-                decoration: const InputDecoration(labelText: 'Freshness Level'),
-                items: freshnessLevels.map((level) {
-                  return DropdownMenuItem<String>(
-                    value: level,
-                    child: Text(level),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    _freshnessLevel = value!;
-                  });
-                },
-              ),
-              DropdownButtonFormField<String>(
-                value: _dietaryInfo,
-                decoration: const InputDecoration(labelText: 'Dietary Info'),
-                items: dietaryInfos.map((info) {
-                  return DropdownMenuItem<String>(
-                    value: info,
-                    child: Text(info),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    _dietaryInfo = value!;
-                  });
-                },
-              ),
-              DropdownButtonFormField<String>(
-                value: _allergyInfo,
-                decoration: const InputDecoration(labelText: 'Allergy Info'),
-                items: allergyInfos.map((level) {
-                  return DropdownMenuItem<String>(
-                    value: level,
-                    child: Text(level),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    _allergyInfo = value!;
-                  });
-                },
-              ),
+              const SizedBox(height: 12),
+              buildDropdown(
+                  'Storage Condition', storageConditions, _storageCondition,
+                  (value) {
+                setState(() => _storageCondition = value!);
+              }),
+              buildDropdown('Freshness Level', freshnessLevels, _freshnessLevel,
+                  (value) {
+                setState(() => _freshnessLevel = value!);
+              }),
+              buildDropdown('Dietary Info', dietaryInfos, _dietaryInfo,
+                  (value) {
+                setState(() => _dietaryInfo = value!);
+              }),
+              buildDropdown('Allergy Info', allergyInfos, _allergyInfo,
+                  (value) {
+                setState(() => _allergyInfo = value!);
+              }),
               const SizedBox(height: 20),
               ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.black,
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                ),
                 onPressed: _submitForm,
-                child: const Text('Submit'),
+                child: const Text('Submit Donation',
+                    style: TextStyle(fontSize: 16, color: Colors.white)),
               ),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget buildDropdown(String label, List<String> items, String selectedItem,
+      void Function(String?) onChanged) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: DropdownButtonFormField<String>(
+        value: selectedItem,
+        decoration: InputDecoration(
+          labelText: label,
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+        ),
+        items: items.map((item) {
+          return DropdownMenuItem<String>(
+            value: item,
+            child: Text(item),
+          );
+        }).toList(),
+        onChanged: onChanged,
       ),
     );
   }
